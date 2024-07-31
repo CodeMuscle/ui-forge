@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { LogoutLink } from '@kinde-oss/kinde-auth-nextjs/components'
 import { DropdownMenuLabel } from '@radix-ui/react-dropdown-menu'
+import Link from 'next/link'
 
 interface IAppProps {
   email: string
@@ -25,7 +26,7 @@ export const UserNav = ({ email, name, userImage }: IAppProps) => {
         <Button variant={'ghost'} className="relative h-10 w-10 rounded-full">
           <Avatar className="h-10 w-10">
             <AvatarImage src={userImage} alt="user-image" />
-            <AvatarFallback>{name.slice(0,3).toUpperCase()}</AvatarFallback>
+            <AvatarFallback>{name.slice(0, 3).toUpperCase()}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -43,6 +44,9 @@ export const UserNav = ({ email, name, userImage }: IAppProps) => {
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
+          <DropdownMenuItem asChild>
+            <Link href="/sell">Sell Your Product</Link>
+          </DropdownMenuItem>
           <DropdownMenuItem>Test Item</DropdownMenuItem>
           <DropdownMenuItem>Test Item</DropdownMenuItem>
           <DropdownMenuItem>Test Item</DropdownMenuItem>
