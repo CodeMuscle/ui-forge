@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
@@ -11,6 +12,7 @@ import SelectCategory from '../components/SelectCategory'
 import { Textarea } from '@/components/ui/textarea'
 import { TipTapEditor } from '../components/Editor'
 import { UploadDropzone } from '../lib/uploadthing'
+import { Button } from '@/components/ui/button'
 
 function SellRoute() {
   return (
@@ -59,6 +61,10 @@ function SellRoute() {
               <UploadDropzone endpoint={'productFileUpload'} />
             </div>
           </CardContent>
+
+          <CardFooter className="mt-5">
+            <Button>Submit Form</Button>
+          </CardFooter>
         </form>
       </Card>
     </section>
