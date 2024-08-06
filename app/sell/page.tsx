@@ -1,3 +1,7 @@
+'use client'
+
+import { useState } from 'react'
+
 import {
   Card,
   CardContent,
@@ -11,10 +15,15 @@ import { Label } from '@/components/ui/label'
 import SelectCategory from '../components/SelectCategory'
 import { Textarea } from '@/components/ui/textarea'
 import { TipTapEditor } from '../components/Editor'
+import { JSONContent } from '@tiptap/react'
 import { UploadDropzone } from '../lib/uploadthing'
 import { Button } from '@/components/ui/button'
 
 function SellRoute() {
+  const [json, setJson] = useState<null | JSONContent>(null);
+  const [images, setImages] = useState<null | string[]>(null);
+  const [ productFile, setProductFile ] = useState<null | string>(null);
+
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8 mb-14">
       <Card>
@@ -29,7 +38,11 @@ function SellRoute() {
           <CardContent className="flex flex-col gap-y-10">
             <div className="flex flex-col gap-y-2">
               <Label>Name</Label>
-              <Input type="text" placeholder="Name of your product" />
+              <Input
+                name="name"
+                type="text"
+                placeholder="Name of your product"
+              />
             </div>
             <div className="flex flex-col gap-y-2">
               <Label>Category</Label>
@@ -38,27 +51,49 @@ function SellRoute() {
 
             <div className="flex flex-col gap-y-2">
               <Label>Price</Label>
-              <Input placeholder="$29" />
+              <Input type="number" name="price" placeholder="$29" />
             </div>
 
             <div className="flex flex-col gap-y-2">
               <Label>Small Summary</Label>
-              <Textarea placeholder="Please describe your product shortly..." />
+              <Textarea
+                name="smallDescription"
+                placeholder="Please describe your product within 50 words..."
+              />
             </div>
 
             <div className="flex flex-col gap-y-2">
+              <Input
+                type="hidden"
+                name="description"
+                value={JSON.stringify(json)}
+              />
               <Label>Description</Label>
-              <TipTapEditor />
+              <TipTapEditor json={json} setJson={setJson} />
             </div>
 
             <div className="flex flex-col gap-y-2">
+              <Input type="hidden" name="images" value={JSON.stringify(images)} />
               <Label>Product Images</Label>
-              <UploadDropzone endpoint={'imageUploader'} />
+              <UploadDropzone
+                onClientUploadComplete={res => {
+                  setImages(res.map(item => item.url))
+                }}
+                onUploadError={(error: Error) => {
+                  throw new Error(`${error}`)
+                }}
+                endpoint={'imageUploader'}
+              />
             </div>
 
             <div className="flex flex-col gap-y-2">
+              <Input type="hidden" name="productFile" value={productFile ?? ""} />
               <Label>Product File</Label>
-              <UploadDropzone endpoint={'productFileUpload'} />
+              <UploadDropzone onClientUploadComplete={(res) => {
+                setProductFile(res[0].url)
+              }} endpoint={'productFileUpload'} onUploadError={(error: Error) => {
+                throw new Error(`${error}`)
+              }} />
             </div>
           </CardContent>
 
