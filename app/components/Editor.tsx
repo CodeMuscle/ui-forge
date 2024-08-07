@@ -66,7 +66,7 @@ export const MenuBar = ({ editor }: { editor: Editor | null }) => {
 export function TipTapEditor({ setJson, json }: {setJson: any, json: JSONContent | null}) {
   const editor = useEditor({
     extensions: [StarterKit],
-    content: json ?? '<p>Hello World</p>',
+    content: json ?? json,
     editorProps: {
       attributes: {
         class: 'focus:outline-none min-h-[150px] prose prose-sm sm:prose-base'

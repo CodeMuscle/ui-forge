@@ -1,33 +1,48 @@
 'use server'
 
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
-import { z } from 'zod';
+import { z } from 'zod'
 
 export type State = {
-  status: 'error' | 'success' | undefined;
+  status: 'error' | 'success' | undefined
   errors?: {
-    [key: string]: string[];
-  };
-  message?: string | null;
+    [key: string]: string[]
+  }
+  message?: string | null
 }
 
 const productSchema = z.object({
   name: z
     .string()
-    .min(3, { message: 'The name needs to have a min character length of 5' }),
+    .min(3, { message: 'The name needs to have a min. character length of 5' }),
   category: z.string().min(1, { message: 'Category is required' }),
   price: z.number().min(1, { message: 'The price has to be bigger than $1' }),
   smallDescription: z
     .string()
     .min(10, { message: 'Please summarize your product here..' }),
-  description: z.string().min(1, { message: 'Description is required' }),
+  description: z.string().min(10, { message: 'Description is required' }),
   images: z.array(z.string(), { message: 'Images are required' }),
   productFile: z
     .string()
     .min(1, { message: 'Please upload a zip of your product' })
-})
+});
 
-export async function SellProduct(formData: FormData) {
+const userSettingsSchema = z.object({
+  firstName: z
+    .string()
+    .min(3, { message: "Minimum length of 3 required" })
+    .or(z.literal(""))
+    .optional(),
+
+  lastName: z
+    .string()
+    .min(3, { message: "Minimum length of 3 required" })
+    .or(z.literal(""))
+    .optional(),
+});
+
+
+export async function SellProduct(prevState: any, formData: FormData) {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
 
@@ -38,20 +53,27 @@ export async function SellProduct(formData: FormData) {
   const validateFields = productSchema.safeParse({
     name: formData.get('name'),
     category: formData.get('category'),
-    price: formData.get('price'),
+    price: Number(formData.get('price')),
     smallDescription: formData.get('smallDescription'),
     description: formData.get('description'),
-    images: formData.get('images'),
-    productFile: formData.get('productFile'),
-  });
+    images: JSON.parse(formData.get('images') as string),
+    productFile: formData.get('productFile')
+  })
 
-  if(!validateFields.success){
+  if (!validateFields.success) {
     const state: State = {
       status: 'error',
       errors: validateFields.error.flatten().fieldErrors,
-      message: 'Oops, they might be an error with one of your inputs.',
-    };
+      message: 'Oops, there might be an error with one of your inputs.'
+    }
 
     return state;
   }
+
+  const state:State = {
+    status: "success",
+    message: "Your product has been created."
+  }
+
+  return state;
 }
