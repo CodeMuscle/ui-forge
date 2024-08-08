@@ -35,7 +35,7 @@ export default function RootLayout({
         />
         <Navbar />
         {children}
-        <Toaster richColors theme='light' closeButton />
+        <Toaster richColors theme="light" closeButton />
       </body>
     </html>
   )
