@@ -12,16 +12,15 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { type JSONContent } from '@tiptap/react'
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useEffect, useState } from 'react'
 import { useFormState } from 'react-dom'
 import { toast } from 'sonner'
-import SelectCategory from '../components/SelectCategory'
+import { SelectCategory } from '../components/SelectCategory'
 import { Textarea } from '@/components/ui/textarea'
 import { TipTapEditor } from '../components/Editor'
 import { UploadDropzone } from '@/app/lib/uploadthing'
-import { Button } from '@/components/ui/button'
-// import { Submitbutton } from "../components/SubmitButtons";
+import { Submitbutton }  from "../components/Submitbutton";
 
 export default function SellForm() {
   const initalState: State = { message: '', status: undefined }
@@ -33,6 +32,7 @@ export default function SellForm() {
   useEffect(() => {
     if (state.status === 'success') {
       toast.success(state.message)
+      redirect("/")
     } else if (state.status === 'error') {
       toast.error(state.message)
     }
@@ -93,7 +93,7 @@ export default function SellForm() {
               <Label>Small Summary</Label>
               <Textarea
                 name="smallDescription"
-                placeholder="Pleae describe your product shortly right here..."
+                placeholder="Please describe your product shortly right here..."
                 required
                 minLength={10}
               />
@@ -168,7 +168,7 @@ export default function SellForm() {
             </div>
           </CardContent>
           <CardFooter className="mt-5">
-            <Button type="submit">Submit Form</Button>
+            <Submitbutton title={'Create your product'} />
           </CardFooter>
         </form>
       </Card>

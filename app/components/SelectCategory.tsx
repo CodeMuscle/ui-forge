@@ -28,4 +28,4 @@ function SelectCategory() {
   )
 }
 
-export default SelectCategory
+export { SelectCategory }; 
