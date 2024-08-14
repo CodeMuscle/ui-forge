@@ -34,7 +34,7 @@ export default async function ProductPage({
 }) {
   const data = await getData(params.id)
   return (
-    <section className="max-w-7xl mx-auto px-4 lg:px-8 lg:grid lg:grid-rows-1 lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16">
+    <section className="max-w-7xl mx-auto px-4 lg:px-8 lg:grid lg:grid-rows-1 lg:grid-cols-7 lg:gap-x-8 lg:gap-y-10 xl:gap-x-16 lg:mt-12">
       <Carousel className="lg:row-end-1 lg:col-span-4">
         <CarouselContent>
           {data?.images.map((item, index) => (
@@ -53,6 +53,12 @@ export default async function ProductPage({
         <CarouselPrevious className="ml-16" />
         <CarouselNext className="mr-16" />
       </Carousel>
+
+      <div className="max-w-2xl mx-auto mt-5 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
+        <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight sm:text-3xl">{data?.name}</h1>
+        <p className="">{data?.smallDescription}</p>
+
+      </div>
     </section>
   )
 }
