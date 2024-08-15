@@ -1,8 +1,11 @@
+import { ProductDescription } from '@/app/components/ProductDescription'
 import prisma from '@/app/lib/db'
 import { Button } from '@/components/ui/button'
 import { Carousel, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { CarouselContent } from '@/components/ui/carousel'
 import Image from 'next/image'
+
+import { JSONContent } from '@tiptap/react'
 
 async function getData(id: string) {
   const data = await prisma.product.findUnique({
@@ -81,7 +84,7 @@ export default async function ProductPage({
       </div>
 
       <div className="w-full max-w-2xl mx-auto mt-16 lg:max-w-none lg:mt-0 lg:col-span-4">
-        <p>{data?.description?.toString()}</p>
+        <ProductDescription content={data?.description as JSONContent} />
       </div>
     </section>
   )

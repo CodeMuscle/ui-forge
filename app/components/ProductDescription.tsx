@@ -1,18 +1,31 @@
-import { JSONContent, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+'use client'
 
-export function ProductDescription({ setJson, json }: {setJson: any, json: JSONContent | null}) {
+import { EditorContent, JSONContent, useEditor } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+
+export function ProductDescription({
+  content
+}: {
+  content: JSONContent | null
+}) {
   const editor = useEditor({
     editable: false,
     extensions: [StarterKit],
-    content: json ?? json,
+    content: content,
     editorProps: {
       attributes: {
-        class: 'focus:outline-none min-h-[150px] prose prose-sm sm:prose-base'
-      },
-    },
-    onUpdate: ({ editor }) => {
-      setJson(editor.getJSON());
-    },
+        class: 'prose prose-sm sm:prose-base'
+      }
+    }
   })
+
+  if (!editor) {
+    return null
+  }
+
+  return (
+    <>
+      <EditorContent editor={editor} />
+    </>
+  )
 }
