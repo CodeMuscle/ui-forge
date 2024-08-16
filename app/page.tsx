@@ -1,4 +1,4 @@
-import { NewestProducts } from '@/app/components/NewestProducts';
+import { LoadRows } from '../app/components/ProductRow';
 
 export default function Home() {
   return (
@@ -10,7 +10,7 @@ export default function Home() {
           UIForge stands out as the premier marketplace for all things related to TailwindCSS, offering an unparalleled platform for both sellers and buyers alike.
         </p>
       </div>
-      <NewestProducts />
+      <LoadRows category={'newest'} />
     </section>
   );
 }
