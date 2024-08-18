@@ -1,37 +1,40 @@
-import { Card } from '@/components/ui/card';
-import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import prisma from '../lib/db';
-import { SettingsForm } from '../components/SettingsForm';
+import { Card } from '@/components/ui/card'
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
+import prisma from '../lib/db'
+import { SettingsForm } from '../components/form/SettingsForm'
 
 async function getData(userId: string) {
   const data = await prisma.user.findUnique({
     where: {
-      id: userId,
+      id: userId
     },
     select: {
       firstName: true,
       lastName: true,
-      email: true,
-    },
-  });
+      email: true
+    }
+  })
 
-  return data;
+  return data
 }
 
 const SettingsPage = async () => {
-
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-  if(!user){
+  const { getUser } = getKindeServerSession()
+  const user = await getUser()
+  if (!user) {
     throw new Error('Not authorized!')
   }
 
-  const data = await getData(user.id);
+  const data = await getData(user.id)
 
   return (
     <section className="max-w-7xl mx-auto px-4 md:px-8">
       <Card>
-        <SettingsForm firstName={data?.firstName as string} lastName={data?.lastName as string} email={data?.email as string} />
+        <SettingsForm
+          firstName={data?.firstName as string}
+          lastName={data?.lastName as string}
+          email={data?.email as string}
+        />
       </Card>
     </section>
   )
