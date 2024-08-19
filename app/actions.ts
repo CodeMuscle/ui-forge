@@ -175,3 +175,29 @@ export async function BuyProduct(formData: FormData){
 
   return redirect(session.url as string);
 }
+
+export async function CreateStripeAccountLink(){
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+
+  if(!user){
+    throw new Error("Unauthorized!");
+  }
+
+  const data = await prisma.product.findUnique({
+    where: {
+      id: user.id,
+    },
+    select: {
+      connectedAccountId: true,
+    },
+  });
+
+  const accountLink = await stripe.accountLinks.create({
+    account: data?.connectedAccountId as string,
+    refresh_url: 'http://www.localhost:3000',
+    return_url: 'http://www.localhost:3000',
+    type: 'account_onboarding',
+  })
+}
+
