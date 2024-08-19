@@ -16,7 +16,7 @@ const CancelRoute = () => {
               Payment cancelled
             </h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              Something went wrong with your payment. You haven't been charged yet. Please try again.
+              Something went wrong with your payment. You haven&apos;t been charged yet. Please try again.
             </p>
 
             <Button className='mt-5 sm:mt-6 w-full' asChild>

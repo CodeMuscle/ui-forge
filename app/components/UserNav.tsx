@@ -51,10 +51,11 @@ export const UserNav = ({ email, name, userImage }: IAppProps) => {
             <Link href="/settings">Settings</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/my-products">My products</Link>
+            <Link href="/my-products">My Products</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>Test Item</DropdownMenuItem>
-          <DropdownMenuItem>Test Item</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/billing">Billing</Link>
+          </DropdownMenuItem>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />
