@@ -1,11 +1,18 @@
 import { ProductDescription } from '@/app/components/ProductDescription'
 import prisma from '@/app/lib/db'
 import { Button } from '@/components/ui/button'
-import { Carousel, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
+import {
+  Carousel,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious
+} from '@/components/ui/carousel'
 import { CarouselContent } from '@/components/ui/carousel'
 import Image from 'next/image'
 
 import { JSONContent } from '@tiptap/react'
+import { BuyProduct } from '@/app/actions'
+import { BuyButton } from '@/app/components/Submitbutton'
 
 async function getData(id: string) {
   const data = await prisma.product.findUnique({
@@ -20,6 +27,7 @@ async function getData(id: string) {
       images: true,
       price: true,
       createdAt: true,
+      id: true,
       User: {
         select: {
           profileImage: true,
@@ -60,27 +68,36 @@ export default async function ProductPage({
       </Carousel>
 
       <div className="max-w-2xl mx-auto mt-5 lg:max-w-none lg:mt-0 lg:row-end-2 lg:row-span-2 lg:col-span-3">
-        <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight sm:text-3xl">{data?.name}</h1>
+        <h1 className="text-2xl font-extrabold text-gray-900 tracking-tight sm:text-3xl">
+          {data?.name}
+        </h1>
         <p className="mt-6 text-muted-foreground">{data?.smallDescription}</p>
-        <Button className="w-full mt-10">
-          Buy for ${data?.price}
-        </Button>
+        <form action={BuyProduct}>
+          <input type="hidden" name="id" value={data?.id} />
+          <BuyButton price={data?.price as number} />
+        </form>
 
         <div className="border-t border-gray-200 mt-10 pt-10">
           <div className="grid grid-cols-2 w-full gap-y-3">
-            <h3 className="text-sm font-medium text-muted-foreground col-span-1">Released:</h3>
-            <h3 className="text-sm font-medium col-span-1">{new Intl.DateTimeFormat("en-US", {
-              dateStyle: "long",
-            }).format(data?.createdAt)}</h3>
+            <h3 className="text-sm font-medium text-muted-foreground col-span-1">
+              Released:
+            </h3>
+            <h3 className="text-sm font-medium col-span-1">
+              {new Intl.DateTimeFormat('en-US', {
+                dateStyle: 'long'
+              }).format(data?.createdAt)}
+            </h3>
 
-            <h3 className="text-sm font-medium text-muted-foreground col-span-1">Category:</h3>
-            <h3 className="text-sm font-medium col-span-1 uppercase">{data?.category}</h3>
-
+            <h3 className="text-sm font-medium text-muted-foreground col-span-1">
+              Category:
+            </h3>
+            <h3 className="text-sm font-medium col-span-1 uppercase">
+              {data?.category}
+            </h3>
           </div>
         </div>
 
         <div className="border-t border-gray-200 mt-10"></div>
-
       </div>
 
       <div className="w-full max-w-2xl mx-auto mt-16 lg:max-w-none lg:mt-0 lg:col-span-4">
